@@ -1,5 +1,5 @@
 ﻿/*
- *  Copyright (C) 2012 k_os <ben.at.hemio.de>, daveroda, rolle3k
+ *  Copyright (C) 2012 k_os <ben.at.hemio.de>, thefreeman, rolle3k
  * 
  *  This file is part of rndWalker.
  *
@@ -47,7 +47,7 @@ namespace rndWalker {
             if (botType != null) {
                 bot = (Bot)Activator.CreateInstance(botType);
             } else {
-                //TODO needfix: this will output the error and stop the boot from running, but the file is still loaded.
+                //TODO needfix: this will output the error and stop the bot from running, but the file is still loaded.
                 throw new Exception("Class rndWalker.Bots." + this.botClass + " not found. Exiting.");
             }
 
