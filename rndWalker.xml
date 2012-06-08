@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+    <Script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <Sources>
+       <string>rndWalker.cs</string>
+       <string>Program.cs</string>
+       <string>Common\Attack.cs</string>
+       <string>Common\Logging.cs</string>
+       <string>Common\SnagIt.cs</string>
+       <string>Common\Spell.cs</string>
+       <string>Classes\Barbarian.cs</string>
+       <string>Classes\DemonHunter.cs</string>
+       <string>Classes\Monk.cs</string>
+       <string>Classes\WitchDoctor.cs</string>
+       <string>Classes\Wizard.cs</string>
+       <string>Bots\Bot.cs</string>
+       <string>Bots\Mira.cs</string>
+       <string>Bots\RoyalCryptsMinions.cs</string>
+       <string>Bots\Sarkoth.cs</string>
+      </Sources>
+      <References>
+        <string>D3Advanced .Net.DLL</string>
+      </References>
+    </Script>

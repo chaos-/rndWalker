@@ -241,7 +241,7 @@ namespace rndWalker.Bots {
             Me.UsePower(SNOPowerId.Walk, _x, _y, Me.Z);
             uint count = 0;
             if (_waitTillThere) {
-                while (GetDistance(_x, _y) > 10) {
+                while (GetDistance(_x, _y) > 7) {
                     if (Me.Mode != UnitMode.Running) {
                         Me.UsePower(SNOPowerId.Walk, _x, _y, Me.Z);
                         if (count++ >= _countOut) {

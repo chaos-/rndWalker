@@ -30,19 +30,27 @@ namespace rndWalker.Common {
 
         private string path;
 
+        private bool noLogging = false;
+
         public Logger(string name) {
             this.Name = name;
 
-            this.path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Logs";
+            try {
+                this.path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Logs";
 
-            if (Directory.Exists(path) == false) {
-                Directory.CreateDirectory(path);
+                if (Directory.Exists(path) == false) {
+                    Directory.CreateDirectory(path);
+                }
+
+                this.path += "\\" + DateTime.Today.ToShortDateString() + ".txt";
+            } catch (System.ArgumentException) {
+                noLogging = true;
             }
-
-            this.path += "\\" + DateTime.Today.ToShortDateString() + ".txt";
         }
 
         public void Log(string message) {
+            if (noLogging)
+                return;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("[{0}] {1}: {2}{3}", DateTime.Now.ToShortTimeString(), this.Name, message, System.Environment.NewLine);
             File.AppendAllText(this.path, sb.ToString());
