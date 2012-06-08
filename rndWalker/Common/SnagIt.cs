@@ -32,18 +32,29 @@ namespace rndWalker.Common {
             var items = Unit.Get().Where(x => x.Type == UnitType.Item && x.ItemContainer == Container.Unknown && CheckItemSnag(x));
 
             while (items.Any()) {
-                items = items.OrderBy(i => Bot.GetDistance(i.X, i.Y));
-
-                foreach (Unit u in items) {
-                    int count = 0;
-                    while (u.Valid == true && u.ItemContainer != Container.Inventory && count < 10) {
-                        Me.UsePower(u.Type == UnitType.Gizmo || u.Type == UnitType.Item ? SNOPowerId.Axe_Operate_Gizmo : SNOPowerId.Axe_Operate_NPC, u); //Move.Interact(u);
-                        Thread.Sleep(300);
-                        ++count;
+                // why is there not native getMin function? -.-
+                Unit u = items.First();
+                float minDist = Bot.GetDistance(u.X, u.Y);
+                foreach (Unit i in items) {
+                    if (i.ActorId == SNOActorId.GoldCoins
+                        || i.ActorId == SNOActorId.GoldLarge
+                        || i.ActorId == SNOActorId.GoldMedium
+                        || i.ActorId == SNOActorId.GoldSmall)
+                        continue;
+                    if (Bot.GetDistance(i.X, i.Y) < minDist) {
+                        u = i;
+                        minDist = Bot.GetDistance(i.X, i.Y);
                     }
                 }
 
-                items = Unit.Get().Where(x => x.Type == UnitType.Item && x.ItemContainer == Container.Unknown && CheckItemSnag(x));
+                int count = 0;
+                while (u.Valid == true && u.ItemContainer != Container.Inventory && count < 10) {
+                    Me.UsePower(SNOPowerId.Axe_Operate_Gizmo, u); //Move.Interact(u);
+                    Thread.Sleep(150);
+                    ++count;
+                }
+
+                items = Unit.Get().Where(x => x.Type == UnitType.Item && x.ItemContainer == Container.Unknown && x.Valid && CheckItemSnag(x));
             }
         }
 
@@ -79,8 +90,8 @@ namespace rndWalker.Common {
 
         public static bool CheckItemStash(Unit i) {
             return i.ItemQuality >= UnitItemQuality.Rare4
-                    || i.Name.Contains("Topaz (30)")  || i.Name.Contains("Amethyst (30)") || i.Name.Contains("Emerald (30)") || i.Name.Contains("Ruby (30)")
-                    || i.Name.Contains("Essence (100)") || i.Name.Contains("Tear (100)") || i.Name.Contains("Hoof (100)") || i.Name.Contains("Plan") ;
+                    || i.Name.Contains("Topaz (30)") || i.Name.Contains("Amethyst (30)") || i.Name.Contains("Emerald (30)") || i.Name.Contains("Ruby (30)")
+                    || i.Name.Contains("Essence (100)") || i.Name.Contains("Tear (100)") || i.Name.Contains("Hoof (100)") || i.Name.Contains("Plan");
         }
 
         public static bool CheckItemSnag(Unit unit) {

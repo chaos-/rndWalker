@@ -29,15 +29,17 @@ using rndWalker.Bots;
 
 namespace rndWalker.Classes {
     public static class Monk {
-        public static Spell mantraOfHealing = new Spell(SNOPowerId.Monk_MantraOfHealing,  50, 0);
-        public static Spell mantraOfEvasion = new Spell(SNOPowerId.Monk_MantraOfEvasion,  50, 0); 
-        public static Spell mantraOfConviction = new Spell(SNOPowerId.Monk_MantraOfConviction,  50, 0);
+        public static Spell mantraOfHealing = new Spell(SNOPowerId.Monk_MantraOfHealing, 50, 0);
+        public static Spell mantraOfEvasion = new Spell(SNOPowerId.Monk_MantraOfEvasion, 50, 0);
+        public static Spell mantraOfConviction = new Spell(SNOPowerId.Monk_MantraOfConviction, 50, 0);
 
-        public static Spell blindingFlash = new Spell(SNOPowerId.Monk_BlindingFlash,  10, 0);
-        public static Spell breathOfHeaven = new Spell(SNOPowerId.Monk_BreathOfHeaven,  25, 0);
-        public static Spell serenity = new Spell(SNOPowerId.Monk_Serenity,  10, 0);
-        public static Spell sevenSidedStrike = new Spell(SNOPowerId.Monk_SevenSidedStrike,  50, 0);
-        public static Spell wayOfTheHundredFists = new Spell(SNOPowerId.Monk_WayOfTheHundredFists,  0, 0);
+        public static Spell blindingFlash = new Spell(SNOPowerId.Monk_BlindingFlash, 10, 0);
+        public static Spell breathOfHeaven = new Spell(SNOPowerId.Monk_BreathOfHeaven, 25, 0);
+        public static Spell mysticAlly = new Spell(SNOPowerId.Monk_MysticAlly, 25, 0);
+        public static Spell sweepingWind = new Spell(SNOPowerId.Monk_SweepingWind, 75, 0);
+        public static Spell serenity = new Spell(SNOPowerId.Monk_Serenity, 10, 0);
+        public static Spell sevenSidedStrike = new Spell(SNOPowerId.Monk_SevenSidedStrike, 50, 0);
+        public static Spell wayOfTheHundredFists = new Spell(SNOPowerId.Monk_WayOfTheHundredFists, 0, 0);
         //public static Spell potion = new Spell(SNOPowerId.Axe_Operate_Gizmo, 30, 0, 0, true);
 
         public static void drinkPot() {
@@ -59,6 +61,8 @@ namespace rndWalker.Classes {
                 mantraOfEvasion.use();
             if (!UIElement.Get().Any(e => e.Name.Contains("buff Monk_MantraOfConviction")))
                 mantraOfConviction.use();
+            if (!Unit.Get().Any(u => u.Name.Contains("Mystic Ally")))
+                mysticAlly.use();
 
             while (_unit.Life > 0) {
                 if (Me.MaxLife - Me.Life > 10000) {
@@ -72,8 +76,14 @@ namespace rndWalker.Classes {
 
                 if (sevenSidedStrike.use(_unit))
                     Thread.Sleep(900);
-                else
+                else {
+                    // 2DEDEFC4: 42A41DDB1E96841A 'Root.NormalLayer.buffs_backgroundScreen.buff Monk_SweepingWind:0:2023882837 dlg.icon' (Visible: True)
+                    var buff = UIElement.Get(0x42A41DDB1E96841A);
+                    if (buff == default(UIElement) || !buff.Visible)
+                        sweepingWind.use();
+
                     wayOfTheHundredFists.use(_unit);
+                }
 
                 blindingFlash.use();
 

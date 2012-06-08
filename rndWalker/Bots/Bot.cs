@@ -86,7 +86,7 @@ namespace rndWalker.Bots {
 
             // 20DDD3F4: BFAAF48BA9316742 Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint (Visible: True)
             var btn = UIElement.Get(0xBFAAF48BA9316742);
-            
+
             // wait for button to appear
             while (btn == default(UIElement) || !btn.Visible) {
                 Thread.Sleep(300);
@@ -333,13 +333,13 @@ namespace rndWalker.Bots {
         protected Unit[] waitForMobs(uint _timeout) {
             var mobs = Unit.Get().Where(x => x.Type == UnitType.Monster && ((uint)x.MonsterType == 0 || (uint)x.MonsterType == 4) && x.Mode != UnitMode.Warping && x.Life > 0
                 && x.GetAttributeInteger(UnitAttribute.Is_NPC) == 0 && x.GetAttributeInteger(UnitAttribute.Is_Helper) == 0
-                && x.GetAttributeInteger(UnitAttribute.Invulnerable) == 0).ToArray();
+                && x.GetAttributeInteger(UnitAttribute.Invulnerable) == 0 && x.GetAttributeInteger(UnitAttribute.Pet_Type) != 9/*mystic ally*/).ToArray();
             uint count = 0;
             while (mobs.Length <= 0 && count < 2 * _timeout) {
                 Thread.Sleep(500);
                 mobs = Unit.Get().Where(x => x.Type == UnitType.Monster && ((uint)x.MonsterType == 0 || (uint)x.MonsterType == 4) && x.Mode != UnitMode.Warping && x.Life > 0
                     && x.GetAttributeInteger(UnitAttribute.Is_NPC) == 0 && x.GetAttributeInteger(UnitAttribute.Is_Helper) == 0
-                    && x.GetAttributeInteger(UnitAttribute.Invulnerable) == 0).ToArray();
+                    && x.GetAttributeInteger(UnitAttribute.Invulnerable) == 0 && x.GetAttributeInteger(UnitAttribute.Pet_Type) != 9/*mystic ally*/).ToArray();
                 ++count;
             }
             return mobs;
