@@ -59,7 +59,7 @@ namespace rndWalker.Bots {
         }
 
         override public void Execute() {
-            if ((uint)Me.LevelArea != 0x163FD || GetDistance(1991,2653)>10) {
+            if (Me.LevelArea.ToString() != "Axe_Bad_Data" || (uint)Me.LevelArea != 0x163FD || GetDistance(1991,2653)>10) {
                 if (Game.Ingame) {
                     ExitGame();
                     while (Game.Ingame) Thread.Sleep(383);
