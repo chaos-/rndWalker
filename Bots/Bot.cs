@@ -40,7 +40,7 @@ namespace rndWalker.Bots {
             foreach (Unit i in items) {
                 occupiedSlots += i.ItemSizeX * i.ItemSizeY;
             }
-            return 6*10 - occupiedSlots;
+            return 6 * 10 - occupiedSlots;
         }
 
         protected void closeInventory() {
@@ -78,15 +78,23 @@ namespace rndWalker.Bots {
         }
 
         /// <summary>
-        /// clicks the revive button once per second. does not handle the popups yet
+        /// revives if dead, returns immediately otherwise
         /// </summary>
         protected void revive() {
+            if (Me.Life > 0)
+                return;
+
             // 20DDD3F4: BFAAF48BA9316742 Root.NormalLayer.deathmenu_dialog.dialog_main.button_revive_at_checkpoint (Visible: True)
             var btn = UIElement.Get(0xBFAAF48BA9316742);
-            while (btn != default(UIElement) && btn.Visible) {
-                btn.Click();
-                Thread.Sleep(1000);
+            
+            // wait for button to appear
+            while (btn == default(UIElement) || !btn.Visible) {
+                Thread.Sleep(300);
+                btn = UIElement.Get(0xBFAAF48BA9316742);
             }
+            // no need to wait for the cd, button can be clicked even if while a human cannot
+            btn.Click();
+            Thread.Sleep(1000);
         }
 
         /// <summary>
@@ -140,7 +148,7 @@ namespace rndWalker.Bots {
                     Thread.Sleep(687);
                 }
             }
-            
+
             // 23E844FC: C4A9CC94C0A929B Root.NormalLayer.BattleNetCampaign_main.LayoutRoot.Menu.ChangeQuestButton (Visible: True)
             UIElement changeQuest = UIElement.Get(0xC4A9CC94C0A929B);
             changeQuest.Click();
@@ -364,7 +372,7 @@ namespace rndWalker.Bots {
 
         protected void killThese(Unit[] _units) {
             //_units = _units.OrderBy(u1 => GetDistance(u1.X, u1.Y, Me.X, Me.Y)).ToArray();
-            while (_units.Any() ) {
+            while (_units.Any()) {
                 _units = _units.Where(u => u.Valid).ToArray();
                 if (!_units.Any())
                     break;

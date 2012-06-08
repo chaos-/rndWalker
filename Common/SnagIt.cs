@@ -30,15 +30,20 @@ namespace rndWalker.Common {
     public static class SnagIt {
         public static void SnagItems() {
             var items = Unit.Get().Where(x => x.Type == UnitType.Item && x.ItemContainer == Container.Unknown && CheckItemSnag(x));
-            items = items.OrderBy(i => Bot.GetDistance(i.X, i.Y));
 
-            foreach (Unit u in items) {
-                int count = 0;
-                while (u.Valid == true && u.ItemContainer != Container.Inventory && count < 10) {
-                    Me.UsePower(u.Type == UnitType.Gizmo || u.Type == UnitType.Item ? SNOPowerId.Axe_Operate_Gizmo : SNOPowerId.Axe_Operate_NPC, u); //Move.Interact(u);
-                    Thread.Sleep(300);
-                    ++count;
+            while (items.Any()) {
+                items = items.OrderBy(i => Bot.GetDistance(i.X, i.Y));
+
+                foreach (Unit u in items) {
+                    int count = 0;
+                    while (u.Valid == true && u.ItemContainer != Container.Inventory && count < 10) {
+                        Me.UsePower(u.Type == UnitType.Gizmo || u.Type == UnitType.Item ? SNOPowerId.Axe_Operate_Gizmo : SNOPowerId.Axe_Operate_NPC, u); //Move.Interact(u);
+                        Thread.Sleep(300);
+                        ++count;
+                    }
                 }
+
+                items = Unit.Get().Where(x => x.Type == UnitType.Item && x.ItemContainer == Container.Unknown && CheckItemSnag(x));
             }
         }
 
