@@ -30,7 +30,7 @@ namespace rndWalker.Bots {
     class Sarkoth : Bot {
         public void repair() {
             var itemCount = Unit.Get().Count(i => i.ItemContainer == Container.Inventory);
-            if (needsRepair() || itemCount > 36) {
+            if (needsRepair() || itemCount >= 36) {
                 Thread.Sleep(3000);
                 GoTown();
                 walk(2966, 2825, true);

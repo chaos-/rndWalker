@@ -24,30 +24,25 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 
-namespace rndWalker.Common
-{
-    public class Logger
-    {
+namespace rndWalker.Common {
+    public class Logger {
         public string Name { get; set; }
 
         private string path;
 
-        public Logger(string name)
-        {
+        public Logger(string name) {
             this.Name = name;
 
             this.path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Logs";
 
-            if (Directory.Exists(path) == false)
-            {
+            if (Directory.Exists(path) == false) {
                 Directory.CreateDirectory(path);
             }
 
             this.path += "\\" + DateTime.Today.ToShortDateString() + ".txt";
         }
 
-        public void Log(string message)
-        {
+        public void Log(string message) {
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("[{0}] {1}: {2}{3}", DateTime.Now.ToShortTimeString(), this.Name, message, System.Environment.NewLine);
             File.AppendAllText(this.path, sb.ToString());
@@ -55,23 +50,19 @@ namespace rndWalker.Common
             Console.Write(sb.ToString());
         }
 
-        public void Log(string message, params object[] args)
-        {            
+        public void Log(string message, params object[] args) {
             this.Log(String.Format(message, args));
         }
 
-        public void Log(Exception e)
-        {
+        public void Log(Exception e) {
             this.Log(String.Format("{0}{1}", e.ToString(), System.Environment.NewLine));
         }
 
-        public void Log(Exception e, string message)
-        {
+        public void Log(Exception e, string message) {
             this.Log(String.Format("{0}{1}{2}{1}", message, System.Environment.NewLine, e.ToString()));
         }
 
-        public void Log(Exception e, string format, params object[] args)
-        {
+        public void Log(Exception e, string format, params object[] args) {
             this.Log(e, String.Format(format, args));
         }
     }
