@@ -30,8 +30,69 @@ namespace rndWalker.Classes
 {
     public static class Wizard
     {
-        public static bool AttackUnit(Unit _unit, TimeSpan _timeout) {
-            return false;
+        public static Spell DiamondSkin = new Spell(SNOPowerId.Wizard_DiamondSkin, 15, 0);
+        public static Spell Blizzard = new Spell(SNOPowerId.Wizard_Blizzard, 20, 0);
+        public static Spell ShockPulse = new Spell(SNOPowerId.Wizard_ShockPulse, 0, 0);
+        public static Spell MagicWeapon = new Spell(SNOPowerId.Wizard_MagicWeapon, 25, 0);
+        public static Spell EnergyArmor = new Spell(SNOPowerId.Wizard_EnergyArmor, 25, 0);
+        public static Spell Hydra = new Spell(SNOPowerId.Wizard_Hydra, 15, 0);
+        public static Spell ArcaneOrb = new Spell(SNOPowerId.Wizard_ArcaneOrb, 20, 0);
+        public static Spell Teleport = new Spell(SNOPowerId.Wizard_Teleport, 15, 0);
+
+        public static bool AttackUnit(Unit unit, TimeSpan timeout)
+        {
+            if (unit.Life <= 0)
+            {
+                return false;
+            }
+
+            var startTime = TimeSpan.FromTicks(Environment.TickCount);
+
+
+            while (unit.Life > 0)
+            {
+                //if(Hydra.TimeSinceUsedInSeconds() > 15)
+                if(!IsHydraAlive())
+                    Hydra.use(unit);
+
+                if(!ArcaneOrb.use(unit))
+                    ShockPulse.use(unit);
+
+                if (1.0 * Me.Life / Me.MaxLife < 0.3)
+                {
+                    ShockPulse.use();
+                }
+
+                if (1.0 * Me.Life / Me.MaxLife < 0.25)
+                {
+                    UIElement.Get(0xE1F43DD874E42728).Click();
+                }
+
+                Thread.Sleep(130);
+
+                if (TimeSpan.FromTicks(Environment.TickCount).Subtract(startTime) > timeout)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
+        public static bool IsHydraAlive()
+        {
+            var units = Unit.Get().Where(x => x.Name.Contains("Hydra") || x.AnimationId == SNOAnimId.Wizard_hydraHead_1_attack_03_cone || x.AnimationId == SNOAnimId.Wizard_hydraHead_2_attack_03_cone);
+            return units.Any();
+        }
+
+        public static void CastSelfSpells()
+        {
+            if(EnergyArmor.use())
+                Thread.Sleep(50);
+            if(MagicWeapon.use())
+                Thread.Sleep(50);
+            DiamondSkin.use();
         }
     }
 }
