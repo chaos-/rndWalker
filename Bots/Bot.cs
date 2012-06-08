@@ -33,7 +33,15 @@ namespace rndWalker.Bots {
         abstract public void Execute();
 
         // 0002FA62: 00000001(00000000) # {c:ffffffff}Salvage{/c} = 0x1D19D9E
-        // C3024CC: 48BA183D534400AD Root.NormalLayer.vendor_dialog_mainPage.salvage_dialog.salvage_button (Visible: True)
+
+        protected int getInventoryFreeSpace() {
+            var items = Unit.Get().Where(i => i.ItemContainer == Container.Inventory);
+            int occupiedSlots = 0;
+            foreach (Unit i in items) {
+                occupiedSlots += i.ItemSizeX * i.ItemSizeY;
+            }
+            return 6*10 - occupiedSlots;
+        }
 
         protected void closeInventory() {
             // 303EF3AC: 368FF8C552241695 Root.NormalLayer.inventory_dialog_mainPage.inventory_button_exit (Visible: True)
