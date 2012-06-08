@@ -58,7 +58,7 @@ namespace rndWalker {
         private float oldX = 0, oldY = 0;
         private float lastMoveTick = 0;
         void Game_OnTickEvent(EventArgs e) {
-            if (Game.Ingame) {
+            if (Ingame()) {
                 if (Me.X != oldX || Me.Y != oldY) {
                     oldX = Me.X;
                     oldY = Me.Y;
@@ -111,6 +111,10 @@ namespace rndWalker {
                 Game.Print(string.Format("Run took {0} seconds. Total Runs: {1}", diff / 1000, (++gameCounter)));
                 Thread.Sleep(3000);
             }
+        }
+
+        public static bool Ingame() {
+            return Game.Ingame && Me.LevelArea.ToString() != "Axe_Bad_Data";
         }
     }
 }
