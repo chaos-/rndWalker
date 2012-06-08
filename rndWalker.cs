@@ -114,7 +114,7 @@ namespace rndWalker {
         }
 
         public static bool Ingame() {
-            return Game.Ingame && Me.LevelArea.ToString() != "Axe_Bad_Data";
+            return Game.Ingame && Me.LevelArea != SNOLevelArea.Axe_Bad_Data;
         }
     }
 }
