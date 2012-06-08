@@ -30,7 +30,7 @@ namespace rndWalker.Bots {
     class Sarkoth : Bot {
         public void repair() {
             if (needsRepair() || getInventoryFreeSpace() <= 6) {
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
                 GoTown();
                 walk(2966, 2825, true);
                 walk(2941.5f, 2850.7f, true);
@@ -99,6 +99,7 @@ namespace rndWalker.Bots {
             walk(120, 109, false);
             killAll();
             SnagIt.SnagItems();
+            Thread.Sleep(500);
             killAll(); //?!
             SnagIt.SnagItems();
             ExitGame();

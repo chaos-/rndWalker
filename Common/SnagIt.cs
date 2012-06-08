@@ -75,7 +75,7 @@ namespace rndWalker.Common {
         public static bool CheckItemStash(Unit i) {
             return i.ItemQuality >= UnitItemQuality.Rare4
                     || i.Name.Contains("Topaz (30)")  || i.Name.Contains("Amethyst (30)") || i.Name.Contains("Emerald (30)") || i.Name.Contains("Ruby (30)")
-                    || i.Name.Contains("Essence (100)") || i.Name.Contains("Tear (100)") || i.Name.Contains("Hoof (100)");
+                    || i.Name.Contains("Essence (100)") || i.Name.Contains("Tear (100)") || i.Name.Contains("Hoof (100)") || i.Name.Contains("Plan") ;
         }
 
         public static bool CheckItemSnag(Unit unit) {
@@ -95,7 +95,16 @@ namespace rndWalker.Common {
         }
 
         public static bool CheckItemSalvage(Unit unit) {
-            return false;
+            return !unit.Name.Contains("Book ") // crafting materials
+                && !unit.Name.Contains("Tome")
+                && !unit.Name.Contains("Plan")
+                && !unit.Name.Contains("Essence")
+                && !unit.Name.Contains("Tear")
+                && !unit.Name.Contains("Hoof")
+                && !unit.Name.Contains("Brimstone")
+                && unit.ItemQuality < UnitItemQuality.Rare4
+                && unit.ItemQuality >= UnitItemQuality.Magic1
+                && unit.ItemLevelRequirement == 60;
         }
 
         public static bool CheckItemSell(Unit unit) {
@@ -107,7 +116,8 @@ namespace rndWalker.Common {
                 && !unit.Name.Contains("Hoof")
                 && !unit.Name.Contains("Brimstone")
                 && unit.ItemQuality < UnitItemQuality.Rare4
-                && unit.ItemQuality >= UnitItemQuality.Magic1;
+                && unit.ItemQuality >= UnitItemQuality.Magic1
+                && unit.ItemLevelRequirement < 60;
         }
     }
 }
